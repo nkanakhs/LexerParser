@@ -1,0 +1,4373 @@
+State 2 conflicts: 1 shift/reduce
+State 10 conflicts: 1 shift/reduce
+State 35 conflicts: 1 shift/reduce
+State 57 conflicts: 1 shift/reduce, 2 reduce/reduce
+State 58 conflicts: 1 shift/reduce
+State 108 conflicts: 1 shift/reduce
+State 115 conflicts: 1 shift/reduce
+State 167 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: decList
+
+    2 expr: IDENTIFIER
+    3     | INTEGER_CONST
+    4     | REAL_CONST
+    5     | STRING
+    6     | read_int
+    7     | read_string
+    8     | read_real
+    9     | KW_TRUE
+   10     | KW_FALSE
+   11     | func
+   12     | KW_NOT expr
+   13     | '-' expr
+   14     | expr '*' expr
+   15     | expr '/' expr
+   16     | expr '%' expr
+   17     | expr '+' expr
+   18     | expr '-' expr
+   19     | expr '>' expr
+   20     | expr '=' expr
+   21     | expr NOT_EQUAL expr
+   22     | expr '<' expr
+   23     | expr EQUAL_OR_LESS expr
+   24     | expr KW_AND expr
+   25     | expr KW_OR expr
+   26     | '(' expr ')'
+
+   27 funcParameters: %empty
+   28               | identifiers
+   29               | expr
+   30               | funcParameters ',' expr
+   31               | identifiers ':' data_types
+   32               | identifiers ':' data_types ',' funcParameters
+
+   33 read_string: RDSTRING '(' ')'
+
+   34 read_int: RDINT '(' ')'
+
+   35 read_real: RDREAL '(' ')'
+
+   36 write_string: WRTSTRING '(' STRING ')'
+   37             | WRTSTRING '(' expr ')'
+
+   38 write_int: WRTINT '(' expr ')'
+
+   39 write_real: WRTREAL '(' STRING ')'
+
+   40 allCommands: IDENTIFIER ASSIGN expr ';'
+   41            | ifCommand ';'
+   42            | funcDecl
+   43            | func ';'
+   44            | whileCommand ';'
+   45            | returnCommand ';'
+   46            | varDecl
+   47            | write_int ';'
+   48            | write_real ';'
+   49            | write_string ';'
+   50            | read_int ';'
+   51            | read_real ';'
+   52            | read_string ';'
+
+   53 decList: varDecl
+   54        | funcDecl
+   55        | varDecl decList
+   56        | funcDecl decList
+   57        | KW_CONST identifiers ':' data_types ';'
+   58        | KW_CONST identifiers ':' data_types ';' decList
+
+   59 funcDecl: KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types
+   60         | KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}'
+   61         | KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+
+   62 func: IDENTIFIER '(' funcParameters ')'
+
+   63 body: allCommands
+   64     | allCommands body
+
+   65 ifCommand: KW_IF expr KW_THEN body
+   66          | KW_IF expr KW_THEN body KW_FI
+   67          | ifCommand KW_ELSE body
+   68          | ifCommand KW_ELSE body KW_FI
+
+   69 whileCommand: KW_WHILE expr KW_LOOP body KW_POOL
+
+   70 returnCommand: KW_RETURN
+   71              | KW_RETURN expr
+
+   72 varDecl: KW_LET
+   73        | KW_LET identifiers ':' data_types ';'
+
+   74 arrayDecl: '[' expr ']' ':' data_types
+
+   75 data_types: KW_INT
+   76           | KW_REAL
+   77           | KW_BOOL
+   78           | KW_STRING
+
+   79 identifiers: IDENTIFIER
+   80            | IDENTIFIER ',' identifiers
+   81            | IDENTIFIER ASSIGN expr
+   82            | IDENTIFIER ASSIGN expr ',' identifiers
+   83            | IDENTIFIER arrayDecl
+   84            | IDENTIFIER arrayDecl ASSIGN expr
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'%' (37) 16
+'(' (40) 26 33 34 35 36 37 38 39 59 60 61 62
+')' (41) 26 33 34 35 36 37 38 39 59 60 61 62
+'*' (42) 14
+'+' (43) 17
+',' (44) 30 32 80 82
+'-' (45) 13 18
+'/' (47) 15
+':' (58) 31 32 57 58 59 60 61 73 74
+';' (59) 40 41 43 44 45 47 48 49 50 51 52 57 58 61 73
+'<' (60) 22
+'=' (61) 20
+'>' (62) 19
+'[' (91) 74
+']' (93) 74
+'{' (123) 60 61
+'}' (125) 60 61
+error (256)
+IDENTIFIER (258) 2 40 59 61 62 79 80 81 82 83 84
+INTEGER_CONST (259) 3
+REAL_CONST (260) 4
+STRING (261) 5 36 39
+KW_INT (262) 60 75
+KW_REAL (263) 76
+KW_BOOL (264) 77
+KW_STRING (265) 78
+KW_TRUE (266) 9
+KW_FALSE (267) 10
+KW_IF (268) 65 66
+KW_THEN (269) 65 66
+KW_ELSE (270) 67 68
+KW_FI (271) 66 68
+KW_WHILE (272) 69
+KW_LOOP (273) 69
+KW_POOL (274) 69
+KW_CONST (275) 57 58 59 60 61
+KW_LET (276) 72 73
+KW_RETURN (277) 70 71
+KW_NOT (278) 12
+KW_AND (279) 24
+KW_OR (280) 25
+KW_START (281) 60
+ASSIGN (282) 40 59 60 61 81 82 84
+EQUAL_OR_LESS (283) 23
+NOT_EQUAL (284) 21
+ARROW (285) 60 61
+RDSTRING (286) 33
+RDINT (287) 34
+RDREAL (288) 35
+WRTSTRING (289) 36 37
+WRTINT (290) 38
+WRTREAL (291) 39
+
+
+Nonterminals, with rules where they appear
+
+$accept (54)
+    on left: 0
+program (55)
+    on left: 1, on right: 0
+expr (56)
+    on left: 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22
+    23 24 25 26, on right: 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+    26 29 30 37 38 40 65 66 69 71 74 81 82 84
+funcParameters (57)
+    on left: 27 28 29 30 31 32, on right: 30 32 59 61 62
+read_string (58)
+    on left: 33, on right: 7 52
+read_int (59)
+    on left: 34, on right: 6 50
+read_real (60)
+    on left: 35, on right: 8 51
+write_string (61)
+    on left: 36 37, on right: 49
+write_int (62)
+    on left: 38, on right: 47
+write_real (63)
+    on left: 39, on right: 48
+allCommands (64)
+    on left: 40 41 42 43 44 45 46 47 48 49 50 51 52, on right: 63 64
+decList (65)
+    on left: 53 54 55 56 57 58, on right: 1 55 56 58
+funcDecl (66)
+    on left: 59 60 61, on right: 42 54 56
+func (67)
+    on left: 62, on right: 11 43
+body (68)
+    on left: 63 64, on right: 60 61 64 65 66 67 68 69
+ifCommand (69)
+    on left: 65 66 67 68, on right: 41 67 68
+whileCommand (70)
+    on left: 69, on right: 44
+returnCommand (71)
+    on left: 70 71, on right: 45
+varDecl (72)
+    on left: 72 73, on right: 46 53 55
+arrayDecl (73)
+    on left: 74, on right: 83 84
+data_types (74)
+    on left: 75 76 77 78, on right: 31 32 57 58 59 61 73 74
+identifiers (75)
+    on left: 79 80 81 82 83 84, on right: 28 31 32 57 58 73 80 82
+
+
+State 0
+
+    0 $accept: . program $end
+    1 program: . decList
+   53 decList: . varDecl
+   54        | . funcDecl
+   55        | . varDecl decList
+   56        | . funcDecl decList
+   57        | . KW_CONST identifiers ':' data_types ';'
+   58        | . KW_CONST identifiers ':' data_types ';' decList
+   59 funcDecl: . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types
+   60         | . KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}'
+   61         | . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   72 varDecl: . KW_LET
+   73        | . KW_LET identifiers ':' data_types ';'
+
+    KW_CONST  shift, and go to state 1
+    KW_LET    shift, and go to state 2
+
+    program   go to state 3
+    decList   go to state 4
+    funcDecl  go to state 5
+    varDecl   go to state 6
+
+
+State 1
+
+   57 decList: KW_CONST . identifiers ':' data_types ';'
+   58        | KW_CONST . identifiers ':' data_types ';' decList
+   59 funcDecl: KW_CONST . IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types
+   60         | KW_CONST . KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}'
+   61         | KW_CONST . IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   79 identifiers: . IDENTIFIER
+   80            | . IDENTIFIER ',' identifiers
+   81            | . IDENTIFIER ASSIGN expr
+   82            | . IDENTIFIER ASSIGN expr ',' identifiers
+   83            | . IDENTIFIER arrayDecl
+   84            | . IDENTIFIER arrayDecl ASSIGN expr
+
+    IDENTIFIER  shift, and go to state 7
+    KW_START    shift, and go to state 8
+
+    identifiers  go to state 9
+
+
+State 2
+
+   72 varDecl: KW_LET .  [$end, IDENTIFIER, KW_IF, KW_ELSE, KW_FI, KW_WHILE, KW_POOL, KW_CONST, KW_LET, KW_RETURN, RDSTRING, RDINT, RDREAL, WRTSTRING, WRTINT, WRTREAL, '}', ';']
+   73        | KW_LET . identifiers ':' data_types ';'
+   79 identifiers: . IDENTIFIER
+   80            | . IDENTIFIER ',' identifiers
+   81            | . IDENTIFIER ASSIGN expr
+   82            | . IDENTIFIER ASSIGN expr ',' identifiers
+   83            | . IDENTIFIER arrayDecl
+   84            | . IDENTIFIER arrayDecl ASSIGN expr
+
+    IDENTIFIER  shift, and go to state 10
+
+    IDENTIFIER  [reduce using rule 72 (varDecl)]
+    $default    reduce using rule 72 (varDecl)
+
+    identifiers  go to state 11
+
+
+State 3
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 12
+
+
+State 4
+
+    1 program: decList .
+
+    $default  reduce using rule 1 (program)
+
+
+State 5
+
+   53 decList: . varDecl
+   54        | . funcDecl
+   54        | funcDecl .  [$end]
+   55        | . varDecl decList
+   56        | . funcDecl decList
+   56        | funcDecl . decList
+   57        | . KW_CONST identifiers ':' data_types ';'
+   58        | . KW_CONST identifiers ':' data_types ';' decList
+   59 funcDecl: . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types
+   60         | . KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}'
+   61         | . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   72 varDecl: . KW_LET
+   73        | . KW_LET identifiers ':' data_types ';'
+
+    KW_CONST  shift, and go to state 1
+    KW_LET    shift, and go to state 2
+
+    $default  reduce using rule 54 (decList)
+
+    decList   go to state 13
+    funcDecl  go to state 5
+    varDecl   go to state 6
+
+
+State 6
+
+   53 decList: . varDecl
+   53        | varDecl .  [$end]
+   54        | . funcDecl
+   55        | . varDecl decList
+   55        | varDecl . decList
+   56        | . funcDecl decList
+   57        | . KW_CONST identifiers ':' data_types ';'
+   58        | . KW_CONST identifiers ':' data_types ';' decList
+   59 funcDecl: . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types
+   60         | . KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}'
+   61         | . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   72 varDecl: . KW_LET
+   73        | . KW_LET identifiers ':' data_types ';'
+
+    KW_CONST  shift, and go to state 1
+    KW_LET    shift, and go to state 2
+
+    $default  reduce using rule 53 (decList)
+
+    decList   go to state 14
+    funcDecl  go to state 5
+    varDecl   go to state 6
+
+
+State 7
+
+   59 funcDecl: KW_CONST IDENTIFIER . ASSIGN '(' funcParameters ')' ':' data_types
+   61         | KW_CONST IDENTIFIER . ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   74 arrayDecl: . '[' expr ']' ':' data_types
+   79 identifiers: IDENTIFIER .  [':']
+   80            | IDENTIFIER . ',' identifiers
+   81            | IDENTIFIER . ASSIGN expr
+   82            | IDENTIFIER . ASSIGN expr ',' identifiers
+   83            | IDENTIFIER . arrayDecl
+   84            | IDENTIFIER . arrayDecl ASSIGN expr
+
+    ASSIGN  shift, and go to state 15
+    ','     shift, and go to state 16
+    '['     shift, and go to state 17
+
+    $default  reduce using rule 79 (identifiers)
+
+    arrayDecl  go to state 18
+
+
+State 8
+
+   60 funcDecl: KW_CONST KW_START . ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}'
+
+    ASSIGN  shift, and go to state 19
+
+
+State 9
+
+   57 decList: KW_CONST identifiers . ':' data_types ';'
+   58        | KW_CONST identifiers . ':' data_types ';' decList
+
+    ':'  shift, and go to state 20
+
+
+State 10
+
+   74 arrayDecl: . '[' expr ']' ':' data_types
+   79 identifiers: IDENTIFIER .  [')', ',', ':']
+   80            | IDENTIFIER . ',' identifiers
+   81            | IDENTIFIER . ASSIGN expr
+   82            | IDENTIFIER . ASSIGN expr ',' identifiers
+   83            | IDENTIFIER . arrayDecl
+   84            | IDENTIFIER . arrayDecl ASSIGN expr
+
+    ASSIGN  shift, and go to state 21
+    ','     shift, and go to state 16
+    '['     shift, and go to state 17
+
+    ','       [reduce using rule 79 (identifiers)]
+    $default  reduce using rule 79 (identifiers)
+
+    arrayDecl  go to state 18
+
+
+State 11
+
+   73 varDecl: KW_LET identifiers . ':' data_types ';'
+
+    ':'  shift, and go to state 22
+
+
+State 12
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 13
+
+   56 decList: funcDecl decList .
+
+    $default  reduce using rule 56 (decList)
+
+
+State 14
+
+   55 decList: varDecl decList .
+
+    $default  reduce using rule 55 (decList)
+
+
+State 15
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   59 funcDecl: KW_CONST IDENTIFIER ASSIGN . '(' funcParameters ')' ':' data_types
+   61         | KW_CONST IDENTIFIER ASSIGN . '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   81 identifiers: IDENTIFIER ASSIGN . expr
+   82            | IDENTIFIER ASSIGN . expr ',' identifiers
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 34
+
+    expr         go to state 35
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 16
+
+   79 identifiers: . IDENTIFIER
+   80            | . IDENTIFIER ',' identifiers
+   80            | IDENTIFIER ',' . identifiers
+   81            | . IDENTIFIER ASSIGN expr
+   82            | . IDENTIFIER ASSIGN expr ',' identifiers
+   83            | . IDENTIFIER arrayDecl
+   84            | . IDENTIFIER arrayDecl ASSIGN expr
+
+    IDENTIFIER  shift, and go to state 10
+
+    identifiers  go to state 40
+
+
+State 17
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   74 arrayDecl: '[' . expr ']' ':' data_types
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 42
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 18
+
+   83 identifiers: IDENTIFIER arrayDecl .  [')', ',', ':']
+   84            | IDENTIFIER arrayDecl . ASSIGN expr
+
+    ASSIGN  shift, and go to state 43
+
+    $default  reduce using rule 83 (identifiers)
+
+
+State 19
+
+   60 funcDecl: KW_CONST KW_START ASSIGN . '(' ')' ':' KW_INT ARROW '{' body '}'
+
+    '('  shift, and go to state 44
+
+
+State 20
+
+   57 decList: KW_CONST identifiers ':' . data_types ';'
+   58        | KW_CONST identifiers ':' . data_types ';' decList
+   75 data_types: . KW_INT
+   76           | . KW_REAL
+   77           | . KW_BOOL
+   78           | . KW_STRING
+
+    KW_INT     shift, and go to state 45
+    KW_REAL    shift, and go to state 46
+    KW_BOOL    shift, and go to state 47
+    KW_STRING  shift, and go to state 48
+
+    data_types  go to state 49
+
+
+State 21
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   81 identifiers: IDENTIFIER ASSIGN . expr
+   82            | IDENTIFIER ASSIGN . expr ',' identifiers
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 35
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 22
+
+   73 varDecl: KW_LET identifiers ':' . data_types ';'
+   75 data_types: . KW_INT
+   76           | . KW_REAL
+   77           | . KW_BOOL
+   78           | . KW_STRING
+
+    KW_INT     shift, and go to state 45
+    KW_REAL    shift, and go to state 46
+    KW_BOOL    shift, and go to state 47
+    KW_STRING  shift, and go to state 48
+
+    data_types  go to state 50
+
+
+State 23
+
+    2 expr: IDENTIFIER .  [KW_THEN, KW_LOOP, KW_AND, KW_OR, EQUAL_OR_LESS, NOT_EQUAL, '+', '-', '*', '/', '%', ')', '<', '>', '=', ',', ':', ';', ']']
+   62 func: IDENTIFIER . '(' funcParameters ')'
+
+    '('  shift, and go to state 51
+
+    $default  reduce using rule 2 (expr)
+
+
+State 24
+
+    3 expr: INTEGER_CONST .
+
+    $default  reduce using rule 3 (expr)
+
+
+State 25
+
+    4 expr: REAL_CONST .
+
+    $default  reduce using rule 4 (expr)
+
+
+State 26
+
+    5 expr: STRING .
+
+    $default  reduce using rule 5 (expr)
+
+
+State 27
+
+    9 expr: KW_TRUE .
+
+    $default  reduce using rule 9 (expr)
+
+
+State 28
+
+   10 expr: KW_FALSE .
+
+    $default  reduce using rule 10 (expr)
+
+
+State 29
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   12     | KW_NOT . expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 52
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 30
+
+   33 read_string: RDSTRING . '(' ')'
+
+    '('  shift, and go to state 53
+
+
+State 31
+
+   34 read_int: RDINT . '(' ')'
+
+    '('  shift, and go to state 54
+
+
+State 32
+
+   35 read_real: RDREAL . '(' ')'
+
+    '('  shift, and go to state 55
+
+
+State 33
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   13     | '-' . expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 56
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 34
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   26     | '(' . expr ')'
+   27 funcParameters: . %empty  [')', ',']
+   28               | . identifiers
+   29               | . expr
+   30               | . funcParameters ',' expr
+   31               | . identifiers ':' data_types
+   32               | . identifiers ':' data_types ',' funcParameters
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   59 funcDecl: KW_CONST IDENTIFIER ASSIGN '(' . funcParameters ')' ':' data_types
+   61         | KW_CONST IDENTIFIER ASSIGN '(' . funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   79 identifiers: . IDENTIFIER
+   80            | . IDENTIFIER ',' identifiers
+   81            | . IDENTIFIER ASSIGN expr
+   82            | . IDENTIFIER ASSIGN expr ',' identifiers
+   83            | . IDENTIFIER arrayDecl
+   84            | . IDENTIFIER arrayDecl ASSIGN expr
+
+    IDENTIFIER     shift, and go to state 57
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    $default  reduce using rule 27 (funcParameters)
+
+    expr            go to state 58
+    funcParameters  go to state 59
+    read_string     go to state 36
+    read_int        go to state 37
+    read_real       go to state 38
+    func            go to state 39
+    identifiers     go to state 60
+
+
+State 35
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+   81 identifiers: IDENTIFIER ASSIGN expr .  [')', ',', ':']
+   82            | IDENTIFIER ASSIGN expr . ',' identifiers
+
+    KW_AND         shift, and go to state 61
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+    ','            shift, and go to state 73
+
+    ','       [reduce using rule 81 (identifiers)]
+    $default  reduce using rule 81 (identifiers)
+
+
+State 36
+
+    7 expr: read_string .
+
+    $default  reduce using rule 7 (expr)
+
+
+State 37
+
+    6 expr: read_int .
+
+    $default  reduce using rule 6 (expr)
+
+
+State 38
+
+    8 expr: read_real .
+
+    $default  reduce using rule 8 (expr)
+
+
+State 39
+
+   11 expr: func .
+
+    $default  reduce using rule 11 (expr)
+
+
+State 40
+
+   80 identifiers: IDENTIFIER ',' identifiers .
+
+    $default  reduce using rule 80 (identifiers)
+
+
+State 41
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   26     | '(' . expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 74
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 42
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+   74 arrayDecl: '[' expr . ']' ':' data_types
+
+    KW_AND         shift, and go to state 61
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+    ']'            shift, and go to state 75
+
+
+State 43
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   84 identifiers: IDENTIFIER arrayDecl ASSIGN . expr
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 76
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 44
+
+   60 funcDecl: KW_CONST KW_START ASSIGN '(' . ')' ':' KW_INT ARROW '{' body '}'
+
+    ')'  shift, and go to state 77
+
+
+State 45
+
+   75 data_types: KW_INT .
+
+    $default  reduce using rule 75 (data_types)
+
+
+State 46
+
+   76 data_types: KW_REAL .
+
+    $default  reduce using rule 76 (data_types)
+
+
+State 47
+
+   77 data_types: KW_BOOL .
+
+    $default  reduce using rule 77 (data_types)
+
+
+State 48
+
+   78 data_types: KW_STRING .
+
+    $default  reduce using rule 78 (data_types)
+
+
+State 49
+
+   57 decList: KW_CONST identifiers ':' data_types . ';'
+   58        | KW_CONST identifiers ':' data_types . ';' decList
+
+    ';'  shift, and go to state 78
+
+
+State 50
+
+   73 varDecl: KW_LET identifiers ':' data_types . ';'
+
+    ';'  shift, and go to state 79
+
+
+State 51
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   27 funcParameters: . %empty  [')', ',']
+   28               | . identifiers
+   29               | . expr
+   30               | . funcParameters ',' expr
+   31               | . identifiers ':' data_types
+   32               | . identifiers ':' data_types ',' funcParameters
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   62     | IDENTIFIER '(' . funcParameters ')'
+   79 identifiers: . IDENTIFIER
+   80            | . IDENTIFIER ',' identifiers
+   81            | . IDENTIFIER ASSIGN expr
+   82            | . IDENTIFIER ASSIGN expr ',' identifiers
+   83            | . IDENTIFIER arrayDecl
+   84            | . IDENTIFIER arrayDecl ASSIGN expr
+
+    IDENTIFIER     shift, and go to state 57
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    $default  reduce using rule 27 (funcParameters)
+
+    expr            go to state 80
+    funcParameters  go to state 81
+    read_string     go to state 36
+    read_int        go to state 37
+    read_real       go to state 38
+    func            go to state 39
+    identifiers     go to state 60
+
+
+State 52
+
+   12 expr: KW_NOT expr .  [KW_THEN, KW_LOOP, ')', ',', ':', ';', ']']
+   14     | expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+
+    KW_AND         shift, and go to state 61
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+
+    $default  reduce using rule 12 (expr)
+
+    Conflict between rule 12 and token KW_AND resolved as shift (KW_NOT < KW_AND).
+    Conflict between rule 12 and token KW_OR resolved as shift (KW_NOT < KW_OR).
+    Conflict between rule 12 and token EQUAL_OR_LESS resolved as shift (KW_NOT < EQUAL_OR_LESS).
+    Conflict between rule 12 and token NOT_EQUAL resolved as shift (KW_NOT < NOT_EQUAL).
+    Conflict between rule 12 and token '+' resolved as shift (KW_NOT < '+').
+    Conflict between rule 12 and token '-' resolved as shift (KW_NOT < '-').
+    Conflict between rule 12 and token '*' resolved as shift (KW_NOT < '*').
+    Conflict between rule 12 and token '/' resolved as shift (KW_NOT < '/').
+    Conflict between rule 12 and token '%' resolved as shift (KW_NOT < '%').
+    Conflict between rule 12 and token '<' resolved as shift (KW_NOT < '<').
+    Conflict between rule 12 and token '>' resolved as shift (KW_NOT < '>').
+    Conflict between rule 12 and token '=' resolved as shift (KW_NOT < '=').
+
+
+State 53
+
+   33 read_string: RDSTRING '(' . ')'
+
+    ')'  shift, and go to state 82
+
+
+State 54
+
+   34 read_int: RDINT '(' . ')'
+
+    ')'  shift, and go to state 83
+
+
+State 55
+
+   35 read_real: RDREAL '(' . ')'
+
+    ')'  shift, and go to state 84
+
+
+State 56
+
+   13 expr: '-' expr .  [KW_THEN, KW_LOOP, KW_AND, KW_OR, EQUAL_OR_LESS, NOT_EQUAL, '+', '-', ')', ',', ':', ';', ']']
+   14     | expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+
+    '*'  shift, and go to state 67
+    '/'  shift, and go to state 68
+    '%'  shift, and go to state 69
+    '<'  shift, and go to state 70
+    '>'  shift, and go to state 71
+    '='  shift, and go to state 72
+
+    $default  reduce using rule 13 (expr)
+
+    Conflict between rule 13 and token KW_AND resolved as reduce (KW_AND < '-').
+    Conflict between rule 13 and token KW_OR resolved as reduce (KW_OR < '-').
+    Conflict between rule 13 and token EQUAL_OR_LESS resolved as reduce (EQUAL_OR_LESS < '-').
+    Conflict between rule 13 and token NOT_EQUAL resolved as reduce (NOT_EQUAL < '-').
+    Conflict between rule 13 and token '+' resolved as reduce ('+' < '-').
+    Conflict between rule 13 and token '-' resolved as reduce (%left '-').
+    Conflict between rule 13 and token '*' resolved as shift ('-' < '*').
+    Conflict between rule 13 and token '/' resolved as shift ('-' < '/').
+    Conflict between rule 13 and token '%' resolved as shift ('-' < '%').
+    Conflict between rule 13 and token '<' resolved as shift ('-' < '<').
+    Conflict between rule 13 and token '>' resolved as shift ('-' < '>').
+    Conflict between rule 13 and token '=' resolved as shift ('-' < '=').
+
+
+State 57
+
+    2 expr: IDENTIFIER .  [KW_AND, KW_OR, EQUAL_OR_LESS, NOT_EQUAL, '+', '-', '*', '/', '%', ')', '<', '>', '=', ',']
+   62 func: IDENTIFIER . '(' funcParameters ')'
+   74 arrayDecl: . '[' expr ']' ':' data_types
+   79 identifiers: IDENTIFIER .  [')', ',', ':']
+   80            | IDENTIFIER . ',' identifiers
+   81            | IDENTIFIER . ASSIGN expr
+   82            | IDENTIFIER . ASSIGN expr ',' identifiers
+   83            | IDENTIFIER . arrayDecl
+   84            | IDENTIFIER . arrayDecl ASSIGN expr
+
+    ASSIGN  shift, and go to state 21
+    '('     shift, and go to state 51
+    ','     shift, and go to state 16
+    '['     shift, and go to state 17
+
+    ')'       reduce using rule 2 (expr)
+    ')'       [reduce using rule 79 (identifiers)]
+    ','       [reduce using rule 2 (expr)]
+    ','       [reduce using rule 79 (identifiers)]
+    ':'       reduce using rule 79 (identifiers)
+    $default  reduce using rule 2 (expr)
+
+    arrayDecl  go to state 18
+
+
+State 58
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+   26     | '(' expr . ')'
+   29 funcParameters: expr .  [')', ',']
+
+    KW_AND         shift, and go to state 61
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    ')'            shift, and go to state 85
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+
+    ')'       [reduce using rule 29 (funcParameters)]
+    $default  reduce using rule 29 (funcParameters)
+
+
+State 59
+
+   30 funcParameters: funcParameters . ',' expr
+   59 funcDecl: KW_CONST IDENTIFIER ASSIGN '(' funcParameters . ')' ':' data_types
+   61         | KW_CONST IDENTIFIER ASSIGN '(' funcParameters . ')' ':' data_types ARROW '{' body '}' ';'
+
+    ')'  shift, and go to state 86
+    ','  shift, and go to state 87
+
+
+State 60
+
+   28 funcParameters: identifiers .  [')', ',']
+   31               | identifiers . ':' data_types
+   32               | identifiers . ':' data_types ',' funcParameters
+
+    ':'  shift, and go to state 88
+
+    $default  reduce using rule 28 (funcParameters)
+
+
+State 61
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   24     | expr KW_AND . expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 89
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 62
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   25     | expr KW_OR . expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 90
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 63
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   23     | expr EQUAL_OR_LESS . expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 91
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 64
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   21     | expr NOT_EQUAL . expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 92
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 65
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   17     | expr '+' . expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 93
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 66
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   18     | expr '-' . expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 94
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 67
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   14     | expr '*' . expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 95
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 68
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   15     | expr '/' . expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 96
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 69
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   16     | expr '%' . expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 97
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 70
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   22     | expr '<' . expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 98
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 71
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   19     | expr '>' . expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 99
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 72
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   20     | expr '=' . expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 100
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 73
+
+   79 identifiers: . IDENTIFIER
+   80            | . IDENTIFIER ',' identifiers
+   81            | . IDENTIFIER ASSIGN expr
+   82            | . IDENTIFIER ASSIGN expr ',' identifiers
+   82            | IDENTIFIER ASSIGN expr ',' . identifiers
+   83            | . IDENTIFIER arrayDecl
+   84            | . IDENTIFIER arrayDecl ASSIGN expr
+
+    IDENTIFIER  shift, and go to state 10
+
+    identifiers  go to state 101
+
+
+State 74
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+   26     | '(' expr . ')'
+
+    KW_AND         shift, and go to state 61
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    ')'            shift, and go to state 85
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+
+
+State 75
+
+   74 arrayDecl: '[' expr ']' . ':' data_types
+
+    ':'  shift, and go to state 102
+
+
+State 76
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+   84 identifiers: IDENTIFIER arrayDecl ASSIGN expr .  [')', ',', ':']
+
+    KW_AND         shift, and go to state 61
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+
+    $default  reduce using rule 84 (identifiers)
+
+
+State 77
+
+   60 funcDecl: KW_CONST KW_START ASSIGN '(' ')' . ':' KW_INT ARROW '{' body '}'
+
+    ':'  shift, and go to state 103
+
+
+State 78
+
+   53 decList: . varDecl
+   54        | . funcDecl
+   55        | . varDecl decList
+   56        | . funcDecl decList
+   57        | . KW_CONST identifiers ':' data_types ';'
+   57        | KW_CONST identifiers ':' data_types ';' .  [$end]
+   58        | . KW_CONST identifiers ':' data_types ';' decList
+   58        | KW_CONST identifiers ':' data_types ';' . decList
+   59 funcDecl: . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types
+   60         | . KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}'
+   61         | . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   72 varDecl: . KW_LET
+   73        | . KW_LET identifiers ':' data_types ';'
+
+    KW_CONST  shift, and go to state 1
+    KW_LET    shift, and go to state 2
+
+    $default  reduce using rule 57 (decList)
+
+    decList   go to state 104
+    funcDecl  go to state 5
+    varDecl   go to state 6
+
+
+State 79
+
+   73 varDecl: KW_LET identifiers ':' data_types ';' .
+
+    $default  reduce using rule 73 (varDecl)
+
+
+State 80
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+   29 funcParameters: expr .  [')', ',']
+
+    KW_AND         shift, and go to state 61
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+
+    $default  reduce using rule 29 (funcParameters)
+
+
+State 81
+
+   30 funcParameters: funcParameters . ',' expr
+   62 func: IDENTIFIER '(' funcParameters . ')'
+
+    ')'  shift, and go to state 105
+    ','  shift, and go to state 87
+
+
+State 82
+
+   33 read_string: RDSTRING '(' ')' .
+
+    $default  reduce using rule 33 (read_string)
+
+
+State 83
+
+   34 read_int: RDINT '(' ')' .
+
+    $default  reduce using rule 34 (read_int)
+
+
+State 84
+
+   35 read_real: RDREAL '(' ')' .
+
+    $default  reduce using rule 35 (read_real)
+
+
+State 85
+
+   26 expr: '(' expr ')' .
+
+    $default  reduce using rule 26 (expr)
+
+
+State 86
+
+   59 funcDecl: KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' . ':' data_types
+   61         | KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' . ':' data_types ARROW '{' body '}' ';'
+
+    ':'  shift, and go to state 106
+
+
+State 87
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   30 funcParameters: funcParameters ',' . expr
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 107
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 88
+
+   31 funcParameters: identifiers ':' . data_types
+   32               | identifiers ':' . data_types ',' funcParameters
+   75 data_types: . KW_INT
+   76           | . KW_REAL
+   77           | . KW_BOOL
+   78           | . KW_STRING
+
+    KW_INT     shift, and go to state 45
+    KW_REAL    shift, and go to state 46
+    KW_BOOL    shift, and go to state 47
+    KW_STRING  shift, and go to state 48
+
+    data_types  go to state 108
+
+
+State 89
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   24     | expr KW_AND expr .  [KW_THEN, KW_LOOP, KW_AND, ')', ',', ':', ';', ']']
+   25     | expr . KW_OR expr
+
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+
+    $default  reduce using rule 24 (expr)
+
+    Conflict between rule 24 and token KW_AND resolved as reduce (%left KW_AND).
+    Conflict between rule 24 and token KW_OR resolved as shift (KW_AND < KW_OR).
+    Conflict between rule 24 and token EQUAL_OR_LESS resolved as shift (KW_AND < EQUAL_OR_LESS).
+    Conflict between rule 24 and token NOT_EQUAL resolved as shift (KW_AND < NOT_EQUAL).
+    Conflict between rule 24 and token '+' resolved as shift (KW_AND < '+').
+    Conflict between rule 24 and token '-' resolved as shift (KW_AND < '-').
+    Conflict between rule 24 and token '*' resolved as shift (KW_AND < '*').
+    Conflict between rule 24 and token '/' resolved as shift (KW_AND < '/').
+    Conflict between rule 24 and token '%' resolved as shift (KW_AND < '%').
+    Conflict between rule 24 and token '<' resolved as shift (KW_AND < '<').
+    Conflict between rule 24 and token '>' resolved as shift (KW_AND < '>').
+    Conflict between rule 24 and token '=' resolved as shift (KW_AND < '=').
+
+
+State 90
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+   25     | expr KW_OR expr .  [KW_THEN, KW_LOOP, KW_AND, KW_OR, ')', ',', ':', ';', ']']
+
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+
+    $default  reduce using rule 25 (expr)
+
+    Conflict between rule 25 and token KW_AND resolved as reduce (KW_AND < KW_OR).
+    Conflict between rule 25 and token KW_OR resolved as reduce (%left KW_OR).
+    Conflict between rule 25 and token EQUAL_OR_LESS resolved as shift (KW_OR < EQUAL_OR_LESS).
+    Conflict between rule 25 and token NOT_EQUAL resolved as shift (KW_OR < NOT_EQUAL).
+    Conflict between rule 25 and token '+' resolved as shift (KW_OR < '+').
+    Conflict between rule 25 and token '-' resolved as shift (KW_OR < '-').
+    Conflict between rule 25 and token '*' resolved as shift (KW_OR < '*').
+    Conflict between rule 25 and token '/' resolved as shift (KW_OR < '/').
+    Conflict between rule 25 and token '%' resolved as shift (KW_OR < '%').
+    Conflict between rule 25 and token '<' resolved as shift (KW_OR < '<').
+    Conflict between rule 25 and token '>' resolved as shift (KW_OR < '>').
+    Conflict between rule 25 and token '=' resolved as shift (KW_OR < '=').
+
+
+State 91
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   23     | expr EQUAL_OR_LESS expr .  [KW_THEN, KW_LOOP, KW_AND, KW_OR, EQUAL_OR_LESS, ')', ',', ':', ';', ']']
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+
+    NOT_EQUAL  shift, and go to state 64
+    '+'        shift, and go to state 65
+    '-'        shift, and go to state 66
+    '*'        shift, and go to state 67
+    '/'        shift, and go to state 68
+    '%'        shift, and go to state 69
+    '<'        shift, and go to state 70
+    '>'        shift, and go to state 71
+    '='        shift, and go to state 72
+
+    $default  reduce using rule 23 (expr)
+
+    Conflict between rule 23 and token KW_AND resolved as reduce (KW_AND < EQUAL_OR_LESS).
+    Conflict between rule 23 and token KW_OR resolved as reduce (KW_OR < EQUAL_OR_LESS).
+    Conflict between rule 23 and token EQUAL_OR_LESS resolved as reduce (%left EQUAL_OR_LESS).
+    Conflict between rule 23 and token NOT_EQUAL resolved as shift (EQUAL_OR_LESS < NOT_EQUAL).
+    Conflict between rule 23 and token '+' resolved as shift (EQUAL_OR_LESS < '+').
+    Conflict between rule 23 and token '-' resolved as shift (EQUAL_OR_LESS < '-').
+    Conflict between rule 23 and token '*' resolved as shift (EQUAL_OR_LESS < '*').
+    Conflict between rule 23 and token '/' resolved as shift (EQUAL_OR_LESS < '/').
+    Conflict between rule 23 and token '%' resolved as shift (EQUAL_OR_LESS < '%').
+    Conflict between rule 23 and token '<' resolved as shift (EQUAL_OR_LESS < '<').
+    Conflict between rule 23 and token '>' resolved as shift (EQUAL_OR_LESS < '>').
+    Conflict between rule 23 and token '=' resolved as shift (EQUAL_OR_LESS < '=').
+
+
+State 92
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   21     | expr NOT_EQUAL expr .  [KW_THEN, KW_LOOP, KW_AND, KW_OR, EQUAL_OR_LESS, NOT_EQUAL, ')', ',', ':', ';', ']']
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+
+    '+'  shift, and go to state 65
+    '-'  shift, and go to state 66
+    '*'  shift, and go to state 67
+    '/'  shift, and go to state 68
+    '%'  shift, and go to state 69
+    '<'  shift, and go to state 70
+    '>'  shift, and go to state 71
+    '='  shift, and go to state 72
+
+    $default  reduce using rule 21 (expr)
+
+    Conflict between rule 21 and token KW_AND resolved as reduce (KW_AND < NOT_EQUAL).
+    Conflict between rule 21 and token KW_OR resolved as reduce (KW_OR < NOT_EQUAL).
+    Conflict between rule 21 and token EQUAL_OR_LESS resolved as reduce (EQUAL_OR_LESS < NOT_EQUAL).
+    Conflict between rule 21 and token NOT_EQUAL resolved as reduce (%left NOT_EQUAL).
+    Conflict between rule 21 and token '+' resolved as shift (NOT_EQUAL < '+').
+    Conflict between rule 21 and token '-' resolved as shift (NOT_EQUAL < '-').
+    Conflict between rule 21 and token '*' resolved as shift (NOT_EQUAL < '*').
+    Conflict between rule 21 and token '/' resolved as shift (NOT_EQUAL < '/').
+    Conflict between rule 21 and token '%' resolved as shift (NOT_EQUAL < '%').
+    Conflict between rule 21 and token '<' resolved as shift (NOT_EQUAL < '<').
+    Conflict between rule 21 and token '>' resolved as shift (NOT_EQUAL < '>').
+    Conflict between rule 21 and token '=' resolved as shift (NOT_EQUAL < '=').
+
+
+State 93
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   17     | expr '+' expr .  [KW_THEN, KW_LOOP, KW_AND, KW_OR, EQUAL_OR_LESS, NOT_EQUAL, '+', ')', ',', ':', ';', ']']
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+
+    '-'  shift, and go to state 66
+    '*'  shift, and go to state 67
+    '/'  shift, and go to state 68
+    '%'  shift, and go to state 69
+    '<'  shift, and go to state 70
+    '>'  shift, and go to state 71
+    '='  shift, and go to state 72
+
+    $default  reduce using rule 17 (expr)
+
+    Conflict between rule 17 and token KW_AND resolved as reduce (KW_AND < '+').
+    Conflict between rule 17 and token KW_OR resolved as reduce (KW_OR < '+').
+    Conflict between rule 17 and token EQUAL_OR_LESS resolved as reduce (EQUAL_OR_LESS < '+').
+    Conflict between rule 17 and token NOT_EQUAL resolved as reduce (NOT_EQUAL < '+').
+    Conflict between rule 17 and token '+' resolved as reduce (%left '+').
+    Conflict between rule 17 and token '-' resolved as shift ('+' < '-').
+    Conflict between rule 17 and token '*' resolved as shift ('+' < '*').
+    Conflict between rule 17 and token '/' resolved as shift ('+' < '/').
+    Conflict between rule 17 and token '%' resolved as shift ('+' < '%').
+    Conflict between rule 17 and token '<' resolved as shift ('+' < '<').
+    Conflict between rule 17 and token '>' resolved as shift ('+' < '>').
+    Conflict between rule 17 and token '=' resolved as shift ('+' < '=').
+
+
+State 94
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   18     | expr '-' expr .  [KW_THEN, KW_LOOP, KW_AND, KW_OR, EQUAL_OR_LESS, NOT_EQUAL, '+', '-', ')', ',', ':', ';', ']']
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+
+    '*'  shift, and go to state 67
+    '/'  shift, and go to state 68
+    '%'  shift, and go to state 69
+    '<'  shift, and go to state 70
+    '>'  shift, and go to state 71
+    '='  shift, and go to state 72
+
+    $default  reduce using rule 18 (expr)
+
+    Conflict between rule 18 and token KW_AND resolved as reduce (KW_AND < '-').
+    Conflict between rule 18 and token KW_OR resolved as reduce (KW_OR < '-').
+    Conflict between rule 18 and token EQUAL_OR_LESS resolved as reduce (EQUAL_OR_LESS < '-').
+    Conflict between rule 18 and token NOT_EQUAL resolved as reduce (NOT_EQUAL < '-').
+    Conflict between rule 18 and token '+' resolved as reduce ('+' < '-').
+    Conflict between rule 18 and token '-' resolved as reduce (%left '-').
+    Conflict between rule 18 and token '*' resolved as shift ('-' < '*').
+    Conflict between rule 18 and token '/' resolved as shift ('-' < '/').
+    Conflict between rule 18 and token '%' resolved as shift ('-' < '%').
+    Conflict between rule 18 and token '<' resolved as shift ('-' < '<').
+    Conflict between rule 18 and token '>' resolved as shift ('-' < '>').
+    Conflict between rule 18 and token '=' resolved as shift ('-' < '=').
+
+
+State 95
+
+   14 expr: expr . '*' expr
+   14     | expr '*' expr .  [KW_THEN, KW_LOOP, KW_AND, KW_OR, EQUAL_OR_LESS, NOT_EQUAL, '+', '-', '*', ')', ',', ':', ';', ']']
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+
+    '/'  shift, and go to state 68
+    '%'  shift, and go to state 69
+    '<'  shift, and go to state 70
+    '>'  shift, and go to state 71
+    '='  shift, and go to state 72
+
+    $default  reduce using rule 14 (expr)
+
+    Conflict between rule 14 and token KW_AND resolved as reduce (KW_AND < '*').
+    Conflict between rule 14 and token KW_OR resolved as reduce (KW_OR < '*').
+    Conflict between rule 14 and token EQUAL_OR_LESS resolved as reduce (EQUAL_OR_LESS < '*').
+    Conflict between rule 14 and token NOT_EQUAL resolved as reduce (NOT_EQUAL < '*').
+    Conflict between rule 14 and token '+' resolved as reduce ('+' < '*').
+    Conflict between rule 14 and token '-' resolved as reduce ('-' < '*').
+    Conflict between rule 14 and token '*' resolved as reduce (%left '*').
+    Conflict between rule 14 and token '/' resolved as shift ('*' < '/').
+    Conflict between rule 14 and token '%' resolved as shift ('*' < '%').
+    Conflict between rule 14 and token '<' resolved as shift ('*' < '<').
+    Conflict between rule 14 and token '>' resolved as shift ('*' < '>').
+    Conflict between rule 14 and token '=' resolved as shift ('*' < '=').
+
+
+State 96
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   15     | expr '/' expr .  [KW_THEN, KW_LOOP, KW_AND, KW_OR, EQUAL_OR_LESS, NOT_EQUAL, '+', '-', '*', '/', ')', ',', ':', ';', ']']
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+
+    '%'  shift, and go to state 69
+    '<'  shift, and go to state 70
+    '>'  shift, and go to state 71
+    '='  shift, and go to state 72
+
+    $default  reduce using rule 15 (expr)
+
+    Conflict between rule 15 and token KW_AND resolved as reduce (KW_AND < '/').
+    Conflict between rule 15 and token KW_OR resolved as reduce (KW_OR < '/').
+    Conflict between rule 15 and token EQUAL_OR_LESS resolved as reduce (EQUAL_OR_LESS < '/').
+    Conflict between rule 15 and token NOT_EQUAL resolved as reduce (NOT_EQUAL < '/').
+    Conflict between rule 15 and token '+' resolved as reduce ('+' < '/').
+    Conflict between rule 15 and token '-' resolved as reduce ('-' < '/').
+    Conflict between rule 15 and token '*' resolved as reduce ('*' < '/').
+    Conflict between rule 15 and token '/' resolved as reduce (%left '/').
+    Conflict between rule 15 and token '%' resolved as shift ('/' < '%').
+    Conflict between rule 15 and token '<' resolved as shift ('/' < '<').
+    Conflict between rule 15 and token '>' resolved as shift ('/' < '>').
+    Conflict between rule 15 and token '=' resolved as shift ('/' < '=').
+
+
+State 97
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   16     | expr '%' expr .  [KW_THEN, KW_LOOP, KW_AND, KW_OR, EQUAL_OR_LESS, NOT_EQUAL, '+', '-', '*', '/', '%', ')', ',', ':', ';', ']']
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+
+    '<'  shift, and go to state 70
+    '>'  shift, and go to state 71
+    '='  shift, and go to state 72
+
+    $default  reduce using rule 16 (expr)
+
+    Conflict between rule 16 and token KW_AND resolved as reduce (KW_AND < '%').
+    Conflict between rule 16 and token KW_OR resolved as reduce (KW_OR < '%').
+    Conflict between rule 16 and token EQUAL_OR_LESS resolved as reduce (EQUAL_OR_LESS < '%').
+    Conflict between rule 16 and token NOT_EQUAL resolved as reduce (NOT_EQUAL < '%').
+    Conflict between rule 16 and token '+' resolved as reduce ('+' < '%').
+    Conflict between rule 16 and token '-' resolved as reduce ('-' < '%').
+    Conflict between rule 16 and token '*' resolved as reduce ('*' < '%').
+    Conflict between rule 16 and token '/' resolved as reduce ('/' < '%').
+    Conflict between rule 16 and token '%' resolved as reduce (%left '%').
+    Conflict between rule 16 and token '<' resolved as shift ('%' < '<').
+    Conflict between rule 16 and token '>' resolved as shift ('%' < '>').
+    Conflict between rule 16 and token '=' resolved as shift ('%' < '=').
+
+
+State 98
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   22     | expr '<' expr .  [KW_THEN, KW_LOOP, KW_AND, KW_OR, EQUAL_OR_LESS, NOT_EQUAL, '+', '-', '*', '/', '%', ')', '<', ',', ':', ';', ']']
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+
+    '>'  shift, and go to state 71
+    '='  shift, and go to state 72
+
+    $default  reduce using rule 22 (expr)
+
+    Conflict between rule 22 and token KW_AND resolved as reduce (KW_AND < '<').
+    Conflict between rule 22 and token KW_OR resolved as reduce (KW_OR < '<').
+    Conflict between rule 22 and token EQUAL_OR_LESS resolved as reduce (EQUAL_OR_LESS < '<').
+    Conflict between rule 22 and token NOT_EQUAL resolved as reduce (NOT_EQUAL < '<').
+    Conflict between rule 22 and token '+' resolved as reduce ('+' < '<').
+    Conflict between rule 22 and token '-' resolved as reduce ('-' < '<').
+    Conflict between rule 22 and token '*' resolved as reduce ('*' < '<').
+    Conflict between rule 22 and token '/' resolved as reduce ('/' < '<').
+    Conflict between rule 22 and token '%' resolved as reduce ('%' < '<').
+    Conflict between rule 22 and token '<' resolved as reduce (%left '<').
+    Conflict between rule 22 and token '>' resolved as shift ('<' < '>').
+    Conflict between rule 22 and token '=' resolved as shift ('<' < '=').
+
+
+State 99
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   19     | expr '>' expr .  [KW_THEN, KW_LOOP, KW_AND, KW_OR, EQUAL_OR_LESS, NOT_EQUAL, '+', '-', '*', '/', '%', ')', '<', '>', ',', ':', ';', ']']
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+
+    '='  shift, and go to state 72
+
+    $default  reduce using rule 19 (expr)
+
+    Conflict between rule 19 and token KW_AND resolved as reduce (KW_AND < '>').
+    Conflict between rule 19 and token KW_OR resolved as reduce (KW_OR < '>').
+    Conflict between rule 19 and token EQUAL_OR_LESS resolved as reduce (EQUAL_OR_LESS < '>').
+    Conflict between rule 19 and token NOT_EQUAL resolved as reduce (NOT_EQUAL < '>').
+    Conflict between rule 19 and token '+' resolved as reduce ('+' < '>').
+    Conflict between rule 19 and token '-' resolved as reduce ('-' < '>').
+    Conflict between rule 19 and token '*' resolved as reduce ('*' < '>').
+    Conflict between rule 19 and token '/' resolved as reduce ('/' < '>').
+    Conflict between rule 19 and token '%' resolved as reduce ('%' < '>').
+    Conflict between rule 19 and token '<' resolved as reduce ('<' < '>').
+    Conflict between rule 19 and token '>' resolved as reduce (%left '>').
+    Conflict between rule 19 and token '=' resolved as shift ('>' < '=').
+
+
+State 100
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   20     | expr '=' expr .  [KW_THEN, KW_LOOP, KW_AND, KW_OR, EQUAL_OR_LESS, NOT_EQUAL, '+', '-', '*', '/', '%', ')', '<', '>', '=', ',', ':', ';', ']']
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+
+    $default  reduce using rule 20 (expr)
+
+    Conflict between rule 20 and token KW_AND resolved as reduce (KW_AND < '=').
+    Conflict between rule 20 and token KW_OR resolved as reduce (KW_OR < '=').
+    Conflict between rule 20 and token EQUAL_OR_LESS resolved as reduce (EQUAL_OR_LESS < '=').
+    Conflict between rule 20 and token NOT_EQUAL resolved as reduce (NOT_EQUAL < '=').
+    Conflict between rule 20 and token '+' resolved as reduce ('+' < '=').
+    Conflict between rule 20 and token '-' resolved as reduce ('-' < '=').
+    Conflict between rule 20 and token '*' resolved as reduce ('*' < '=').
+    Conflict between rule 20 and token '/' resolved as reduce ('/' < '=').
+    Conflict between rule 20 and token '%' resolved as reduce ('%' < '=').
+    Conflict between rule 20 and token '<' resolved as reduce ('<' < '=').
+    Conflict between rule 20 and token '>' resolved as reduce ('>' < '=').
+    Conflict between rule 20 and token '=' resolved as reduce (%left '=').
+
+
+State 101
+
+   82 identifiers: IDENTIFIER ASSIGN expr ',' identifiers .
+
+    $default  reduce using rule 82 (identifiers)
+
+
+State 102
+
+   74 arrayDecl: '[' expr ']' ':' . data_types
+   75 data_types: . KW_INT
+   76           | . KW_REAL
+   77           | . KW_BOOL
+   78           | . KW_STRING
+
+    KW_INT     shift, and go to state 45
+    KW_REAL    shift, and go to state 46
+    KW_BOOL    shift, and go to state 47
+    KW_STRING  shift, and go to state 48
+
+    data_types  go to state 109
+
+
+State 103
+
+   60 funcDecl: KW_CONST KW_START ASSIGN '(' ')' ':' . KW_INT ARROW '{' body '}'
+
+    KW_INT  shift, and go to state 110
+
+
+State 104
+
+   58 decList: KW_CONST identifiers ':' data_types ';' decList .
+
+    $default  reduce using rule 58 (decList)
+
+
+State 105
+
+   62 func: IDENTIFIER '(' funcParameters ')' .
+
+    $default  reduce using rule 62 (func)
+
+
+State 106
+
+   59 funcDecl: KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' . data_types
+   61         | KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' . data_types ARROW '{' body '}' ';'
+   75 data_types: . KW_INT
+   76           | . KW_REAL
+   77           | . KW_BOOL
+   78           | . KW_STRING
+
+    KW_INT     shift, and go to state 45
+    KW_REAL    shift, and go to state 46
+    KW_BOOL    shift, and go to state 47
+    KW_STRING  shift, and go to state 48
+
+    data_types  go to state 111
+
+
+State 107
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+   30 funcParameters: funcParameters ',' expr .  [')', ',']
+
+    KW_AND         shift, and go to state 61
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+
+    $default  reduce using rule 30 (funcParameters)
+
+
+State 108
+
+   31 funcParameters: identifiers ':' data_types .  [')', ',']
+   32               | identifiers ':' data_types . ',' funcParameters
+
+    ','  shift, and go to state 112
+
+    ','       [reduce using rule 31 (funcParameters)]
+    $default  reduce using rule 31 (funcParameters)
+
+
+State 109
+
+   74 arrayDecl: '[' expr ']' ':' data_types .
+
+    $default  reduce using rule 74 (arrayDecl)
+
+
+State 110
+
+   60 funcDecl: KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT . ARROW '{' body '}'
+
+    ARROW  shift, and go to state 113
+
+
+State 111
+
+   59 funcDecl: KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types .  [$end, IDENTIFIER, KW_IF, KW_ELSE, KW_FI, KW_WHILE, KW_POOL, KW_CONST, KW_LET, KW_RETURN, RDSTRING, RDINT, RDREAL, WRTSTRING, WRTINT, WRTREAL, '}', ';']
+   61         | KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types . ARROW '{' body '}' ';'
+
+    ARROW  shift, and go to state 114
+
+    $default  reduce using rule 59 (funcDecl)
+
+
+State 112
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   27 funcParameters: . %empty  [')', ',']
+   28               | . identifiers
+   29               | . expr
+   30               | . funcParameters ',' expr
+   31               | . identifiers ':' data_types
+   32               | . identifiers ':' data_types ',' funcParameters
+   32               | identifiers ':' data_types ',' . funcParameters
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   79 identifiers: . IDENTIFIER
+   80            | . IDENTIFIER ',' identifiers
+   81            | . IDENTIFIER ASSIGN expr
+   82            | . IDENTIFIER ASSIGN expr ',' identifiers
+   83            | . IDENTIFIER arrayDecl
+   84            | . IDENTIFIER arrayDecl ASSIGN expr
+
+    IDENTIFIER     shift, and go to state 57
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    $default  reduce using rule 27 (funcParameters)
+
+    expr            go to state 80
+    funcParameters  go to state 115
+    read_string     go to state 36
+    read_int        go to state 37
+    read_real       go to state 38
+    func            go to state 39
+    identifiers     go to state 60
+
+
+State 113
+
+   60 funcDecl: KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW . '{' body '}'
+
+    '{'  shift, and go to state 116
+
+
+State 114
+
+   61 funcDecl: KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW . '{' body '}' ';'
+
+    '{'  shift, and go to state 117
+
+
+State 115
+
+   30 funcParameters: funcParameters . ',' expr
+   32               | identifiers ':' data_types ',' funcParameters .  [')', ',']
+
+    ','  shift, and go to state 87
+
+    ','       [reduce using rule 32 (funcParameters)]
+    $default  reduce using rule 32 (funcParameters)
+
+
+State 116
+
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   36 write_string: . WRTSTRING '(' STRING ')'
+   37             | . WRTSTRING '(' expr ')'
+   38 write_int: . WRTINT '(' expr ')'
+   39 write_real: . WRTREAL '(' STRING ')'
+   40 allCommands: . IDENTIFIER ASSIGN expr ';'
+   41            | . ifCommand ';'
+   42            | . funcDecl
+   43            | . func ';'
+   44            | . whileCommand ';'
+   45            | . returnCommand ';'
+   46            | . varDecl
+   47            | . write_int ';'
+   48            | . write_real ';'
+   49            | . write_string ';'
+   50            | . read_int ';'
+   51            | . read_real ';'
+   52            | . read_string ';'
+   59 funcDecl: . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types
+   60         | . KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}'
+   60         | KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' . body '}'
+   61         | . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   63 body: . allCommands
+   64     | . allCommands body
+   65 ifCommand: . KW_IF expr KW_THEN body
+   66          | . KW_IF expr KW_THEN body KW_FI
+   67          | . ifCommand KW_ELSE body
+   68          | . ifCommand KW_ELSE body KW_FI
+   69 whileCommand: . KW_WHILE expr KW_LOOP body KW_POOL
+   70 returnCommand: . KW_RETURN
+   71              | . KW_RETURN expr
+   72 varDecl: . KW_LET
+   73        | . KW_LET identifiers ':' data_types ';'
+
+    IDENTIFIER  shift, and go to state 118
+    KW_IF       shift, and go to state 119
+    KW_WHILE    shift, and go to state 120
+    KW_CONST    shift, and go to state 121
+    KW_LET      shift, and go to state 2
+    KW_RETURN   shift, and go to state 122
+    RDSTRING    shift, and go to state 30
+    RDINT       shift, and go to state 31
+    RDREAL      shift, and go to state 32
+    WRTSTRING   shift, and go to state 123
+    WRTINT      shift, and go to state 124
+    WRTREAL     shift, and go to state 125
+
+    read_string    go to state 126
+    read_int       go to state 127
+    read_real      go to state 128
+    write_string   go to state 129
+    write_int      go to state 130
+    write_real     go to state 131
+    allCommands    go to state 132
+    funcDecl       go to state 133
+    func           go to state 134
+    body           go to state 135
+    ifCommand      go to state 136
+    whileCommand   go to state 137
+    returnCommand  go to state 138
+    varDecl        go to state 139
+
+
+State 117
+
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   36 write_string: . WRTSTRING '(' STRING ')'
+   37             | . WRTSTRING '(' expr ')'
+   38 write_int: . WRTINT '(' expr ')'
+   39 write_real: . WRTREAL '(' STRING ')'
+   40 allCommands: . IDENTIFIER ASSIGN expr ';'
+   41            | . ifCommand ';'
+   42            | . funcDecl
+   43            | . func ';'
+   44            | . whileCommand ';'
+   45            | . returnCommand ';'
+   46            | . varDecl
+   47            | . write_int ';'
+   48            | . write_real ';'
+   49            | . write_string ';'
+   50            | . read_int ';'
+   51            | . read_real ';'
+   52            | . read_string ';'
+   59 funcDecl: . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types
+   60         | . KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}'
+   61         | . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   61         | KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' . body '}' ';'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   63 body: . allCommands
+   64     | . allCommands body
+   65 ifCommand: . KW_IF expr KW_THEN body
+   66          | . KW_IF expr KW_THEN body KW_FI
+   67          | . ifCommand KW_ELSE body
+   68          | . ifCommand KW_ELSE body KW_FI
+   69 whileCommand: . KW_WHILE expr KW_LOOP body KW_POOL
+   70 returnCommand: . KW_RETURN
+   71              | . KW_RETURN expr
+   72 varDecl: . KW_LET
+   73        | . KW_LET identifiers ':' data_types ';'
+
+    IDENTIFIER  shift, and go to state 118
+    KW_IF       shift, and go to state 119
+    KW_WHILE    shift, and go to state 120
+    KW_CONST    shift, and go to state 121
+    KW_LET      shift, and go to state 2
+    KW_RETURN   shift, and go to state 122
+    RDSTRING    shift, and go to state 30
+    RDINT       shift, and go to state 31
+    RDREAL      shift, and go to state 32
+    WRTSTRING   shift, and go to state 123
+    WRTINT      shift, and go to state 124
+    WRTREAL     shift, and go to state 125
+
+    read_string    go to state 126
+    read_int       go to state 127
+    read_real      go to state 128
+    write_string   go to state 129
+    write_int      go to state 130
+    write_real     go to state 131
+    allCommands    go to state 132
+    funcDecl       go to state 133
+    func           go to state 134
+    body           go to state 140
+    ifCommand      go to state 136
+    whileCommand   go to state 137
+    returnCommand  go to state 138
+    varDecl        go to state 139
+
+
+State 118
+
+   40 allCommands: IDENTIFIER . ASSIGN expr ';'
+   62 func: IDENTIFIER . '(' funcParameters ')'
+
+    ASSIGN  shift, and go to state 141
+    '('     shift, and go to state 51
+
+
+State 119
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   65 ifCommand: KW_IF . expr KW_THEN body
+   66          | KW_IF . expr KW_THEN body KW_FI
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 142
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 120
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   69 whileCommand: KW_WHILE . expr KW_LOOP body KW_POOL
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 143
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 121
+
+   59 funcDecl: KW_CONST . IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types
+   60         | KW_CONST . KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}'
+   61         | KW_CONST . IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+
+    IDENTIFIER  shift, and go to state 144
+    KW_START    shift, and go to state 8
+
+
+State 122
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   70 returnCommand: KW_RETURN .  [';']
+   71              | KW_RETURN . expr
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    $default  reduce using rule 70 (returnCommand)
+
+    expr         go to state 145
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 123
+
+   36 write_string: WRTSTRING . '(' STRING ')'
+   37             | WRTSTRING . '(' expr ')'
+
+    '('  shift, and go to state 146
+
+
+State 124
+
+   38 write_int: WRTINT . '(' expr ')'
+
+    '('  shift, and go to state 147
+
+
+State 125
+
+   39 write_real: WRTREAL . '(' STRING ')'
+
+    '('  shift, and go to state 148
+
+
+State 126
+
+   52 allCommands: read_string . ';'
+
+    ';'  shift, and go to state 149
+
+
+State 127
+
+   50 allCommands: read_int . ';'
+
+    ';'  shift, and go to state 150
+
+
+State 128
+
+   51 allCommands: read_real . ';'
+
+    ';'  shift, and go to state 151
+
+
+State 129
+
+   49 allCommands: write_string . ';'
+
+    ';'  shift, and go to state 152
+
+
+State 130
+
+   47 allCommands: write_int . ';'
+
+    ';'  shift, and go to state 153
+
+
+State 131
+
+   48 allCommands: write_real . ';'
+
+    ';'  shift, and go to state 154
+
+
+State 132
+
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   36 write_string: . WRTSTRING '(' STRING ')'
+   37             | . WRTSTRING '(' expr ')'
+   38 write_int: . WRTINT '(' expr ')'
+   39 write_real: . WRTREAL '(' STRING ')'
+   40 allCommands: . IDENTIFIER ASSIGN expr ';'
+   41            | . ifCommand ';'
+   42            | . funcDecl
+   43            | . func ';'
+   44            | . whileCommand ';'
+   45            | . returnCommand ';'
+   46            | . varDecl
+   47            | . write_int ';'
+   48            | . write_real ';'
+   49            | . write_string ';'
+   50            | . read_int ';'
+   51            | . read_real ';'
+   52            | . read_string ';'
+   59 funcDecl: . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types
+   60         | . KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}'
+   61         | . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   63 body: . allCommands
+   63     | allCommands .  [KW_ELSE, KW_FI, KW_POOL, '}', ';']
+   64     | . allCommands body
+   64     | allCommands . body
+   65 ifCommand: . KW_IF expr KW_THEN body
+   66          | . KW_IF expr KW_THEN body KW_FI
+   67          | . ifCommand KW_ELSE body
+   68          | . ifCommand KW_ELSE body KW_FI
+   69 whileCommand: . KW_WHILE expr KW_LOOP body KW_POOL
+   70 returnCommand: . KW_RETURN
+   71              | . KW_RETURN expr
+   72 varDecl: . KW_LET
+   73        | . KW_LET identifiers ':' data_types ';'
+
+    IDENTIFIER  shift, and go to state 118
+    KW_IF       shift, and go to state 119
+    KW_WHILE    shift, and go to state 120
+    KW_CONST    shift, and go to state 121
+    KW_LET      shift, and go to state 2
+    KW_RETURN   shift, and go to state 122
+    RDSTRING    shift, and go to state 30
+    RDINT       shift, and go to state 31
+    RDREAL      shift, and go to state 32
+    WRTSTRING   shift, and go to state 123
+    WRTINT      shift, and go to state 124
+    WRTREAL     shift, and go to state 125
+
+    $default  reduce using rule 63 (body)
+
+    read_string    go to state 126
+    read_int       go to state 127
+    read_real      go to state 128
+    write_string   go to state 129
+    write_int      go to state 130
+    write_real     go to state 131
+    allCommands    go to state 132
+    funcDecl       go to state 133
+    func           go to state 134
+    body           go to state 155
+    ifCommand      go to state 136
+    whileCommand   go to state 137
+    returnCommand  go to state 138
+    varDecl        go to state 139
+
+
+State 133
+
+   42 allCommands: funcDecl .
+
+    $default  reduce using rule 42 (allCommands)
+
+
+State 134
+
+   43 allCommands: func . ';'
+
+    ';'  shift, and go to state 156
+
+
+State 135
+
+   60 funcDecl: KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body . '}'
+
+    '}'  shift, and go to state 157
+
+
+State 136
+
+   41 allCommands: ifCommand . ';'
+   67 ifCommand: ifCommand . KW_ELSE body
+   68          | ifCommand . KW_ELSE body KW_FI
+
+    KW_ELSE  shift, and go to state 158
+    ';'      shift, and go to state 159
+
+
+State 137
+
+   44 allCommands: whileCommand . ';'
+
+    ';'  shift, and go to state 160
+
+
+State 138
+
+   45 allCommands: returnCommand . ';'
+
+    ';'  shift, and go to state 161
+
+
+State 139
+
+   46 allCommands: varDecl .
+
+    $default  reduce using rule 46 (allCommands)
+
+
+State 140
+
+   61 funcDecl: KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body . '}' ';'
+
+    '}'  shift, and go to state 162
+
+
+State 141
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   40 allCommands: IDENTIFIER ASSIGN . expr ';'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 163
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 142
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+   65 ifCommand: KW_IF expr . KW_THEN body
+   66          | KW_IF expr . KW_THEN body KW_FI
+
+    KW_THEN        shift, and go to state 164
+    KW_AND         shift, and go to state 61
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+
+
+State 143
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+   69 whileCommand: KW_WHILE expr . KW_LOOP body KW_POOL
+
+    KW_LOOP        shift, and go to state 165
+    KW_AND         shift, and go to state 61
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+
+
+State 144
+
+   59 funcDecl: KW_CONST IDENTIFIER . ASSIGN '(' funcParameters ')' ':' data_types
+   61         | KW_CONST IDENTIFIER . ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+
+    ASSIGN  shift, and go to state 166
+
+
+State 145
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+   71 returnCommand: KW_RETURN expr .  [';']
+
+    KW_AND         shift, and go to state 61
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+
+    $default  reduce using rule 71 (returnCommand)
+
+
+State 146
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   36 write_string: WRTSTRING '(' . STRING ')'
+   37             | WRTSTRING '(' . expr ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 167
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 168
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 147
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   38 write_int: WRTINT '(' . expr ')'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+
+    IDENTIFIER     shift, and go to state 23
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    expr         go to state 169
+    read_string  go to state 36
+    read_int     go to state 37
+    read_real    go to state 38
+    func         go to state 39
+
+
+State 148
+
+   39 write_real: WRTREAL '(' . STRING ')'
+
+    STRING  shift, and go to state 170
+
+
+State 149
+
+   52 allCommands: read_string ';' .
+
+    $default  reduce using rule 52 (allCommands)
+
+
+State 150
+
+   50 allCommands: read_int ';' .
+
+    $default  reduce using rule 50 (allCommands)
+
+
+State 151
+
+   51 allCommands: read_real ';' .
+
+    $default  reduce using rule 51 (allCommands)
+
+
+State 152
+
+   49 allCommands: write_string ';' .
+
+    $default  reduce using rule 49 (allCommands)
+
+
+State 153
+
+   47 allCommands: write_int ';' .
+
+    $default  reduce using rule 47 (allCommands)
+
+
+State 154
+
+   48 allCommands: write_real ';' .
+
+    $default  reduce using rule 48 (allCommands)
+
+
+State 155
+
+   64 body: allCommands body .
+
+    $default  reduce using rule 64 (body)
+
+
+State 156
+
+   43 allCommands: func ';' .
+
+    $default  reduce using rule 43 (allCommands)
+
+
+State 157
+
+   60 funcDecl: KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}' .
+
+    $default  reduce using rule 60 (funcDecl)
+
+
+State 158
+
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   36 write_string: . WRTSTRING '(' STRING ')'
+   37             | . WRTSTRING '(' expr ')'
+   38 write_int: . WRTINT '(' expr ')'
+   39 write_real: . WRTREAL '(' STRING ')'
+   40 allCommands: . IDENTIFIER ASSIGN expr ';'
+   41            | . ifCommand ';'
+   42            | . funcDecl
+   43            | . func ';'
+   44            | . whileCommand ';'
+   45            | . returnCommand ';'
+   46            | . varDecl
+   47            | . write_int ';'
+   48            | . write_real ';'
+   49            | . write_string ';'
+   50            | . read_int ';'
+   51            | . read_real ';'
+   52            | . read_string ';'
+   59 funcDecl: . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types
+   60         | . KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}'
+   61         | . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   63 body: . allCommands
+   64     | . allCommands body
+   65 ifCommand: . KW_IF expr KW_THEN body
+   66          | . KW_IF expr KW_THEN body KW_FI
+   67          | . ifCommand KW_ELSE body
+   67          | ifCommand KW_ELSE . body
+   68          | . ifCommand KW_ELSE body KW_FI
+   68          | ifCommand KW_ELSE . body KW_FI
+   69 whileCommand: . KW_WHILE expr KW_LOOP body KW_POOL
+   70 returnCommand: . KW_RETURN
+   71              | . KW_RETURN expr
+   72 varDecl: . KW_LET
+   73        | . KW_LET identifiers ':' data_types ';'
+
+    IDENTIFIER  shift, and go to state 118
+    KW_IF       shift, and go to state 119
+    KW_WHILE    shift, and go to state 120
+    KW_CONST    shift, and go to state 121
+    KW_LET      shift, and go to state 2
+    KW_RETURN   shift, and go to state 122
+    RDSTRING    shift, and go to state 30
+    RDINT       shift, and go to state 31
+    RDREAL      shift, and go to state 32
+    WRTSTRING   shift, and go to state 123
+    WRTINT      shift, and go to state 124
+    WRTREAL     shift, and go to state 125
+
+    read_string    go to state 126
+    read_int       go to state 127
+    read_real      go to state 128
+    write_string   go to state 129
+    write_int      go to state 130
+    write_real     go to state 131
+    allCommands    go to state 132
+    funcDecl       go to state 133
+    func           go to state 134
+    body           go to state 171
+    ifCommand      go to state 136
+    whileCommand   go to state 137
+    returnCommand  go to state 138
+    varDecl        go to state 139
+
+
+State 159
+
+   41 allCommands: ifCommand ';' .
+
+    $default  reduce using rule 41 (allCommands)
+
+
+State 160
+
+   44 allCommands: whileCommand ';' .
+
+    $default  reduce using rule 44 (allCommands)
+
+
+State 161
+
+   45 allCommands: returnCommand ';' .
+
+    $default  reduce using rule 45 (allCommands)
+
+
+State 162
+
+   61 funcDecl: KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' . ';'
+
+    ';'  shift, and go to state 172
+
+
+State 163
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+   40 allCommands: IDENTIFIER ASSIGN expr . ';'
+
+    KW_AND         shift, and go to state 61
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+    ';'            shift, and go to state 173
+
+
+State 164
+
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   36 write_string: . WRTSTRING '(' STRING ')'
+   37             | . WRTSTRING '(' expr ')'
+   38 write_int: . WRTINT '(' expr ')'
+   39 write_real: . WRTREAL '(' STRING ')'
+   40 allCommands: . IDENTIFIER ASSIGN expr ';'
+   41            | . ifCommand ';'
+   42            | . funcDecl
+   43            | . func ';'
+   44            | . whileCommand ';'
+   45            | . returnCommand ';'
+   46            | . varDecl
+   47            | . write_int ';'
+   48            | . write_real ';'
+   49            | . write_string ';'
+   50            | . read_int ';'
+   51            | . read_real ';'
+   52            | . read_string ';'
+   59 funcDecl: . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types
+   60         | . KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}'
+   61         | . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   63 body: . allCommands
+   64     | . allCommands body
+   65 ifCommand: . KW_IF expr KW_THEN body
+   65          | KW_IF expr KW_THEN . body
+   66          | . KW_IF expr KW_THEN body KW_FI
+   66          | KW_IF expr KW_THEN . body KW_FI
+   67          | . ifCommand KW_ELSE body
+   68          | . ifCommand KW_ELSE body KW_FI
+   69 whileCommand: . KW_WHILE expr KW_LOOP body KW_POOL
+   70 returnCommand: . KW_RETURN
+   71              | . KW_RETURN expr
+   72 varDecl: . KW_LET
+   73        | . KW_LET identifiers ':' data_types ';'
+
+    IDENTIFIER  shift, and go to state 118
+    KW_IF       shift, and go to state 119
+    KW_WHILE    shift, and go to state 120
+    KW_CONST    shift, and go to state 121
+    KW_LET      shift, and go to state 2
+    KW_RETURN   shift, and go to state 122
+    RDSTRING    shift, and go to state 30
+    RDINT       shift, and go to state 31
+    RDREAL      shift, and go to state 32
+    WRTSTRING   shift, and go to state 123
+    WRTINT      shift, and go to state 124
+    WRTREAL     shift, and go to state 125
+
+    read_string    go to state 126
+    read_int       go to state 127
+    read_real      go to state 128
+    write_string   go to state 129
+    write_int      go to state 130
+    write_real     go to state 131
+    allCommands    go to state 132
+    funcDecl       go to state 133
+    func           go to state 134
+    body           go to state 174
+    ifCommand      go to state 136
+    whileCommand   go to state 137
+    returnCommand  go to state 138
+    varDecl        go to state 139
+
+
+State 165
+
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   36 write_string: . WRTSTRING '(' STRING ')'
+   37             | . WRTSTRING '(' expr ')'
+   38 write_int: . WRTINT '(' expr ')'
+   39 write_real: . WRTREAL '(' STRING ')'
+   40 allCommands: . IDENTIFIER ASSIGN expr ';'
+   41            | . ifCommand ';'
+   42            | . funcDecl
+   43            | . func ';'
+   44            | . whileCommand ';'
+   45            | . returnCommand ';'
+   46            | . varDecl
+   47            | . write_int ';'
+   48            | . write_real ';'
+   49            | . write_string ';'
+   50            | . read_int ';'
+   51            | . read_real ';'
+   52            | . read_string ';'
+   59 funcDecl: . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types
+   60         | . KW_CONST KW_START ASSIGN '(' ')' ':' KW_INT ARROW '{' body '}'
+   61         | . KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   63 body: . allCommands
+   64     | . allCommands body
+   65 ifCommand: . KW_IF expr KW_THEN body
+   66          | . KW_IF expr KW_THEN body KW_FI
+   67          | . ifCommand KW_ELSE body
+   68          | . ifCommand KW_ELSE body KW_FI
+   69 whileCommand: . KW_WHILE expr KW_LOOP body KW_POOL
+   69             | KW_WHILE expr KW_LOOP . body KW_POOL
+   70 returnCommand: . KW_RETURN
+   71              | . KW_RETURN expr
+   72 varDecl: . KW_LET
+   73        | . KW_LET identifiers ':' data_types ';'
+
+    IDENTIFIER  shift, and go to state 118
+    KW_IF       shift, and go to state 119
+    KW_WHILE    shift, and go to state 120
+    KW_CONST    shift, and go to state 121
+    KW_LET      shift, and go to state 2
+    KW_RETURN   shift, and go to state 122
+    RDSTRING    shift, and go to state 30
+    RDINT       shift, and go to state 31
+    RDREAL      shift, and go to state 32
+    WRTSTRING   shift, and go to state 123
+    WRTINT      shift, and go to state 124
+    WRTREAL     shift, and go to state 125
+
+    read_string    go to state 126
+    read_int       go to state 127
+    read_real      go to state 128
+    write_string   go to state 129
+    write_int      go to state 130
+    write_real     go to state 131
+    allCommands    go to state 132
+    funcDecl       go to state 133
+    func           go to state 134
+    body           go to state 175
+    ifCommand      go to state 136
+    whileCommand   go to state 137
+    returnCommand  go to state 138
+    varDecl        go to state 139
+
+
+State 166
+
+   59 funcDecl: KW_CONST IDENTIFIER ASSIGN . '(' funcParameters ')' ':' data_types
+   61         | KW_CONST IDENTIFIER ASSIGN . '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+
+    '('  shift, and go to state 176
+
+
+State 167
+
+    5 expr: STRING .  [KW_AND, KW_OR, EQUAL_OR_LESS, NOT_EQUAL, '+', '-', '*', '/', '%', ')', '<', '>', '=']
+   36 write_string: WRTSTRING '(' STRING . ')'
+
+    ')'  shift, and go to state 177
+
+    ')'       [reduce using rule 5 (expr)]
+    $default  reduce using rule 5 (expr)
+
+
+State 168
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+   37 write_string: WRTSTRING '(' expr . ')'
+
+    KW_AND         shift, and go to state 61
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    ')'            shift, and go to state 178
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+
+
+State 169
+
+   14 expr: expr . '*' expr
+   15     | expr . '/' expr
+   16     | expr . '%' expr
+   17     | expr . '+' expr
+   18     | expr . '-' expr
+   19     | expr . '>' expr
+   20     | expr . '=' expr
+   21     | expr . NOT_EQUAL expr
+   22     | expr . '<' expr
+   23     | expr . EQUAL_OR_LESS expr
+   24     | expr . KW_AND expr
+   25     | expr . KW_OR expr
+   38 write_int: WRTINT '(' expr . ')'
+
+    KW_AND         shift, and go to state 61
+    KW_OR          shift, and go to state 62
+    EQUAL_OR_LESS  shift, and go to state 63
+    NOT_EQUAL      shift, and go to state 64
+    '+'            shift, and go to state 65
+    '-'            shift, and go to state 66
+    '*'            shift, and go to state 67
+    '/'            shift, and go to state 68
+    '%'            shift, and go to state 69
+    ')'            shift, and go to state 179
+    '<'            shift, and go to state 70
+    '>'            shift, and go to state 71
+    '='            shift, and go to state 72
+
+
+State 170
+
+   39 write_real: WRTREAL '(' STRING . ')'
+
+    ')'  shift, and go to state 180
+
+
+State 171
+
+   67 ifCommand: ifCommand KW_ELSE body .  [KW_ELSE, ';']
+   68          | ifCommand KW_ELSE body . KW_FI
+
+    KW_FI  shift, and go to state 181
+
+    $default  reduce using rule 67 (ifCommand)
+
+
+State 172
+
+   61 funcDecl: KW_CONST IDENTIFIER ASSIGN '(' funcParameters ')' ':' data_types ARROW '{' body '}' ';' .
+
+    $default  reduce using rule 61 (funcDecl)
+
+
+State 173
+
+   40 allCommands: IDENTIFIER ASSIGN expr ';' .
+
+    $default  reduce using rule 40 (allCommands)
+
+
+State 174
+
+   65 ifCommand: KW_IF expr KW_THEN body .  [KW_ELSE, ';']
+   66          | KW_IF expr KW_THEN body . KW_FI
+
+    KW_FI  shift, and go to state 182
+
+    $default  reduce using rule 65 (ifCommand)
+
+
+State 175
+
+   69 whileCommand: KW_WHILE expr KW_LOOP body . KW_POOL
+
+    KW_POOL  shift, and go to state 183
+
+
+State 176
+
+    2 expr: . IDENTIFIER
+    3     | . INTEGER_CONST
+    4     | . REAL_CONST
+    5     | . STRING
+    6     | . read_int
+    7     | . read_string
+    8     | . read_real
+    9     | . KW_TRUE
+   10     | . KW_FALSE
+   11     | . func
+   12     | . KW_NOT expr
+   13     | . '-' expr
+   14     | . expr '*' expr
+   15     | . expr '/' expr
+   16     | . expr '%' expr
+   17     | . expr '+' expr
+   18     | . expr '-' expr
+   19     | . expr '>' expr
+   20     | . expr '=' expr
+   21     | . expr NOT_EQUAL expr
+   22     | . expr '<' expr
+   23     | . expr EQUAL_OR_LESS expr
+   24     | . expr KW_AND expr
+   25     | . expr KW_OR expr
+   26     | . '(' expr ')'
+   27 funcParameters: . %empty  [')', ',']
+   28               | . identifiers
+   29               | . expr
+   30               | . funcParameters ',' expr
+   31               | . identifiers ':' data_types
+   32               | . identifiers ':' data_types ',' funcParameters
+   33 read_string: . RDSTRING '(' ')'
+   34 read_int: . RDINT '(' ')'
+   35 read_real: . RDREAL '(' ')'
+   59 funcDecl: KW_CONST IDENTIFIER ASSIGN '(' . funcParameters ')' ':' data_types
+   61         | KW_CONST IDENTIFIER ASSIGN '(' . funcParameters ')' ':' data_types ARROW '{' body '}' ';'
+   62 func: . IDENTIFIER '(' funcParameters ')'
+   79 identifiers: . IDENTIFIER
+   80            | . IDENTIFIER ',' identifiers
+   81            | . IDENTIFIER ASSIGN expr
+   82            | . IDENTIFIER ASSIGN expr ',' identifiers
+   83            | . IDENTIFIER arrayDecl
+   84            | . IDENTIFIER arrayDecl ASSIGN expr
+
+    IDENTIFIER     shift, and go to state 57
+    INTEGER_CONST  shift, and go to state 24
+    REAL_CONST     shift, and go to state 25
+    STRING         shift, and go to state 26
+    KW_TRUE        shift, and go to state 27
+    KW_FALSE       shift, and go to state 28
+    KW_NOT         shift, and go to state 29
+    RDSTRING       shift, and go to state 30
+    RDINT          shift, and go to state 31
+    RDREAL         shift, and go to state 32
+    '-'            shift, and go to state 33
+    '('            shift, and go to state 41
+
+    $default  reduce using rule 27 (funcParameters)
+
+    expr            go to state 80
+    funcParameters  go to state 59
+    read_string     go to state 36
+    read_int        go to state 37
+    read_real       go to state 38
+    func            go to state 39
+    identifiers     go to state 60
+
+
+State 177
+
+   36 write_string: WRTSTRING '(' STRING ')' .
+
+    $default  reduce using rule 36 (write_string)
+
+
+State 178
+
+   37 write_string: WRTSTRING '(' expr ')' .
+
+    $default  reduce using rule 37 (write_string)
+
+
+State 179
+
+   38 write_int: WRTINT '(' expr ')' .
+
+    $default  reduce using rule 38 (write_int)
+
+
+State 180
+
+   39 write_real: WRTREAL '(' STRING ')' .
+
+    $default  reduce using rule 39 (write_real)
+
+
+State 181
+
+   68 ifCommand: ifCommand KW_ELSE body KW_FI .
+
+    $default  reduce using rule 68 (ifCommand)
+
+
+State 182
+
+   66 ifCommand: KW_IF expr KW_THEN body KW_FI .
+
+    $default  reduce using rule 66 (ifCommand)
+
+
+State 183
+
+   69 whileCommand: KW_WHILE expr KW_LOOP body KW_POOL .
+
+    $default  reduce using rule 69 (whileCommand)
